@@ -1,2 +1,5 @@
-# vasp-study
-Research notes for VASP
+# Notas de estudo para VASP — Vienna Ab-initio Simulation Package
+
+Notas de estudo para o VASP (Vienna Ab-initio Simulation Package). Aplicação essencial para cálculos
+de estrutura eletrônica e propriedades de materiais a partir de princípios *ab initio*.
+
