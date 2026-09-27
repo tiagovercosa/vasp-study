@@ -1,0 +1,95 @@
+% ─── Packages ─────────────────────────────────────────────────
+\usepackage{iftex}
+\ifpdftex\usepackage[utf8]{inputenc}\fi
+\usepackage[brazilian]{babel}
+\usepackage[
+    a4paper,
+    textwidth  = 155mm,  % ~75 caracteres por linha
+    textheight = 240mm,
+    centering,           % margens iguais: (210-155)/2 = 27,5mm
+    headheight = 15pt,
+    headsep    = 8mm,
+    footskip   = 12mm,
+]{geometry}
+\usepackage{amsmath,amsthm}
+\usepackage{indentfirst}
+\usepackage{physics}
+\usepackage{mathtools}
+
+% ─── Fonts (EB Garamond) ──────────────────────────────────────
+\usepackage{fontspec}
+\usepackage{unicode-math}
+% A Garamond tem letras minúsculas baixas: Scale=MatchLowercase iguala a altura
+% delas à da Latin Modern, deixando o texto visualmente do tamanho esperado para 12pt.
+\setmainfont{EB Garamond}[Scale=MatchLowercase]
+\setsansfont{Libertinus Sans}[Scale=MatchLowercase]
+\setmonofont{JetBrainsMono}[
+    Extension      = .otf,
+    UprightFont    = *-Regular,
+    BoldFont       = *-Bold,
+    ItalicFont     = *-Italic,
+    BoldItalicFont = *-BoldItalic,
+    Scale          = MatchLowercase,
+    Contextuals    = NoAlternate, % sem ligaduras de código (->, >=, !=)
+]
+\setmathfont{Garamond-Math.otf}[Scale=MatchLowercase]
+\linespread{1.08}     % entrelinha proporcional à fonte maior
+\usepackage{microtype}
+\usepackage{siunitx}
+\sisetup{
+  output-decimal-marker = {,}
+}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{slashed}
+\usepackage{cancel}
+\usepackage{minted}
+\usepackage[normalem]{ulem}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% ─── Bibliography ─────────────────────────────────────────────
+\usepackage[autostyle]{csquotes}
+\usepackage[backend=biber,style=numeric-comp,sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+% ─── Colors ───────────────────────────────────────────────────
+\definecolor{lightblue}{RGB}{230,240,250}
+\definecolor{borderblue}{RGB}{100,140,180}
+\definecolor{noteblue}{RGB}{40,80,150}
+
+% ─── Header ───────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textit{\titulo}}
+\lhead{\textbf{Research Notes}}
+\cfoot{\thepage}
+
+% ─── Section Formatting ──────────────────────────────────────
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+
+% ─── Custom Environments ─────────────────────────────────────
+\tcbuselibrary{theorems,skins,breakable}
+
+\newtcolorbox{keyidea}[1][]{
+    colback=lightblue,
+    colframe=noteblue,
+    fonttitle=\bfseries,
+    title=Idea,
+    breakable,
+    #1
+}
+
+\newtcolorbox{openquestion}[1][]{
+    colback=yellow!10,
+    colframe=orange!80!black,
+    fonttitle=\bfseries,
+    title=Open Question,
+    breakable,
+    #1
+}
+
