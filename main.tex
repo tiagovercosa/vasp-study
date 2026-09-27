@@ -1,0 +1,40 @@
+%!TEX program = lualatex
+\documentclass[12pt]{article}
+
+\newcommand{\titulo}{Notas de aula sobre o VASP}
+\newcommand{\subtitle}{Vienna Ab-initio Simulation Package}
+\newcommand{\autor}{Tiago Lima}
+\newcommand{\lab}{Laboratório de Ciência e Engenharia de Materiais (LCCMat)}
+
+\input{preamble.tex}
+
+% ══════════════════════════════════════════════════════════════
+\begin{document}
+
+\begin{center}
+	\thispagestyle{empty}
+  {\LARGE\bfseries \titulo}\\[.5em]
+  {\large \subtitle}\\[.5em]
+  {\lab}\\[2.5em]
+  {\autor}\\[0.5em]
+  {\today}\\[2.0em]
+\end{center}
+
+\begin{abstract}
+  Relatório de notas de aula sobre o VASP, incluindo instruções de uso, funcionalidades dos arquivos
+  de entrada e saída, bem como exemplos de cálculos e análises de resultados. O objetivo é fornecer
+  um guia prático para pesquisadores e alunos do LCCMat que desejam utilizar o VASP em seus estudos
+  de materiais.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{notes/less01.tex}
+
+% ──────────────────────────────────────────────────────────────
+\clearpage
+\printbibliography
+
+\end{document}
+% ══════════════════════════════════════════════════════════════
