@@ -1,0 +1,157 @@
+\section{Instrução ao VASP}
+
+\subsection{Funcionalidades dos arquivos de entrada}
+O VASP utiliza arquivos de entrada específicos para definir os parâmetros da simulação. Os
+principais arquivos de entrada são:
+
+\begin{itemize}
+    \item \texttt{INCAR}: Contém os parâmetros de controle da simulação;
+    \item \texttt{POSCAR}: Define a estrutura cristalina e as posições dos átomos;
+    \item \texttt{KPOINTS}: Especifica a malha de pontos; e
+    \item \texttt{POTCAR}: Contém os pseudopotenciais dos elementos presentes na simulação.
+\end{itemize}
+
+\subsubsection{Arquivo \texttt{INCAR}}
+O arquivo \texttt{INCAR} é um arquivo de \textit{input} central no VASP, que determina \emph{o que
+fazer e como fazer} durante a simulação. As \textit{tags} presentes no arquivo \texttt{INCAR} são o
+conjunto de parâmetros de controle que definem o tipo de cálculo a ser realizado e os algoritmos a
+serem utilizados pelo VASP. Por ser uma das principais causas de erros durante a execução do VASP, é
+importante compreender o significado de cada \textit{tag} e como elas afetam o comportamento do código.
+
+O formato de cada instrução consiste no nome de uma \textit{tag}, no sinal de igual (=) e nos valores
+atribuídos à \textit{tag}, por exemplo, (\texttt{tag = valores}). Segue abaixo o arquivo
+\texttt{INCAR} utilizado para a simulação do EG-Graphene, com comentários explicativos sobre cada \textit{tag}:
+
+\begin{minted}[linenos, frame=single, bgcolor=lightgray!20]{fortran}
+Electronic relaxation:
+
+ENCUT   = 800.000    !energia de cutoff
+ALGO    = Normal     !algoritmo para minimizacao eletronica
+NELM    = 500        !valor default para numero de passos SCF
+NELMIN  = 6          !numero minimo de passos SCF
+NELMDL  = -12        !numero de passos NSCF no inicio
+EDIFF   = 1.0E-7     !criterio de convergencia SCF
+AMIX    = 0.1        !mix densidade pmix=(1-AMIX)*pin+AMIX*pout
+BMIX    = 0.0001     !outra variavel para misturar densidade
+
+Calculation mode :
+
+PREC    = Accurate   !influencia a FFT
+IVDW    = 0          !interacao vdW Grimme D3
+ISPIN   = 1          !spin nao polarizado
+ADDGRID = .TRUE.     !grid add para diminuir ruido no cal das forcas
+LASPH   = .TRUE.
+
+Ionic relaxation:
+
+NSW     = 200        !numero maximo de passos na relaxacao
+EDIFFG  = -0.010     !para a relaxacao quando as forcas forem menores que
+                     !|EDIFFG|
+IBRION  = 2          !algoritmo para relaxacao da rede, POTIM não interfere
+ISIF    = 3          !relaxacao da celula unitaria e ions, muda forma e
+                     !volume da celula (2 pode vir a ser melhor)
+POTIM   = 0.5
+LATTICE_CONSTRAINTS = .TRUE. .TRUE. .FALSE
+
+Integration over the Brillouin zone (BZ):
+
+ISMEAR  = 0           !Gaussian-smearing
+SIGMA   = 0.01        !largura do smearing em eV
+
+DOS calculation:
+
+LORBIT  = 10          !escreve DOSCAR e PROCAR
+NEDOS   = 6001        !numero de pontos no grid da DOS
+
+OUTCAR size:
+
+NWRITE  = 1           !informacao escrita no OUTCAR
+LWAVE   = .FALSE.     !nao escreve o WAVECAR
+LCHARG  = .FALSE.     !nao escreve o CHGCAR e CHG
+
+Key for parallel mode calculation:
+
+NCORE   = 4           !numero de cores por orbital
+LPLANE  = .TRUE.
+\end{minted}
+
+Analisando o meu arquivo de entrada \texttt{INCAR}, o primeiro parâmetro é o \texttt{ENCUT}, que
+define a energia de corte para a base de ondas planas em $\unit{\electronvolt}$, sendo o valor de
+$\SI{800}{\eV}$ utilizado para garantir a convergência da energia total do sistema.
+
+\subsubsection{Arquivo \texttt{POSCAR}}
+O arquivo \texttt{POSCAR} é um dos arquivos de entrada do VASP que contém informações sobre a estrutura
+cristalina do sistema a ser simulado. Ele define a geometria da célula unitária, as posições dos
+átomos e os tipos de átomos presentes na simulação. O formato do arquivo \texttt{POSCAR} é o seguinte:
+
+\begin{minted}[linenos, frame=single, bgcolor=lightgray!20]{text}
+EG-Graphene                             
+   1.0000000000000000     
+     3.8415129872762668   -0.0000076499719885    0.0000000000000000
+    -1.9207631187581891    3.3268440109589794    0.0000000000000000
+     0.0000000000000000    0.0000000000000000   15.0000000000000000
+   C 
+     4
+Direct
+     0.1210004546451131    0.2420030607848673    0.5114700199999973
+     0.7579969542151304    0.8789995233548851    0.5114700199999973
+     0.1209999839420490    0.8789999940579492    0.5114700199999973
+     0.3333326271977057    0.6666674018022931    0.5114700199999973
+
+  0.00000000E+00  0.00000000E+00  0.00000000E+00
+  0.00000000E+00  0.00000000E+00  0.00000000E+00
+  0.00000000E+00  0.00000000E+00  0.00000000E+00
+  0.00000000E+00  0.00000000E+00  0.00000000E+00
+\end{minted}
+
+Na linha 1 do arquivo \texttt{POSCAR}, é especificado o nome do sistema ou uma descrição da
+estrutura. A linha 2 contém o fator de escala, usado para dimensionar os vetores da rede. As
+linhas 3 a 5 contêm os vetores da rede, que definem a geometria da célula unitária. A linha 6 lista
+os tipos de átomos presentes na simulação, enquanto a linha 7 indica o número de átomos de cada
+tipo. A linha 8 pode conter a palavra-chave \texttt{Selective dynamics} (opcional), que permite
+especificar quais átomos podem se mover durante a simulação. A linha 9 indica se as posições dos
+átomos estão em coordenadas diretas (frac) ou cartesianas (cart). As linhas subsequentes contêm as
+posições dos átomos na célula unitária, de acordo com o número de átomos especificado na linha 7.
+
+De posse dessas informações, vemos que o material estudado é o EG-Graphene, com célula unitária
+definida pelos vetores da rede e contendo 4 átomos de carbono. As posições dos átomos são fornecidas
+em coordenadas diretas, e a simulação é realizada em uma célula unitária com dimensões específicas.
+
+\subsubsection{Arquivo \texttt{CONTCAR}}
+O arquivo \texttt{CONTCAR} é gerado pelo VASP após a execução de uma simulação e contém as posições
+finais dos átomos no sistema. O arquivo \texttt{CONTCAR} contém as informações sobre a estrutura,
+por exemplo, as posições iônicas dos átomos. Seu formato é semelhante ao arquivo \texttt{POSCAR},
+sendo escrito a cada passo iônico e após a conclusão do cálculo. Pode ser copiado para o arquivo
+\texttt{POSCAR} para reiniciar a simulação a partir da última configuração.
+
+No \textit{script} de execução do VASP no cluster, isso é feito de forma automática por meio de uma
+instrução \texttt{while} que copia o arquivo \texttt{CONTCAR} para o arquivo \texttt{POSCAR} a cada
+passo iônico, garantindo que a simulação continue a partir da última configuração obtida. Observe o
+código abaixo:
+
+\begin{minted}[linenos, frame=single, bgcolor=lightgray!20]{bash}
+  i=50
+  icount=0
+  maxstep=10
+
+  while [ $i -ne 1 ]
+  do
+      mpirun -hostfile $PBS_NODEFILE -np $NCPUS vasp_std > log6.out
+
+      icount=$((icount+1))
+      echo $icount >> log.dat
+
+      if [ $icount -ge $maxstep ]; then
+          exit 1
+      fi
+
+      cp CONTCAR POSCAR
+
+      i=`grep F OSZICAR | tail -n1 | awk '{print $1;}'`
+  done
+\end{minted}
+
+Observa-se que o código acima utiliza um loop \texttt{while} para executar o VASP até que a condição
+de parada seja atendida. A cada iteração, o arquivo \texttt{CONTCAR} é copiado para o arquivo
+\texttt{POSCAR}, garantindo que a simulação continue a partir da última configuração obtida.
+
