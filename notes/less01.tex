@@ -1,21 +1,23 @@
 \section{Instrução ao VASP}
 
 \subsection{Funcionalidades dos arquivos de entrada}
-O VASP utiliza arquivos de entrada específicos para definir os parâmetros da simulação. Os
-principais arquivos de entrada são:
+O VASP utiliza arquivos de entrada específicos para definir os
+parâmetros da simulação. Os principais arquivos de entrada são:
 
 \begin{itemize}
-    \item \texttt{INCAR}: Contém os parâmetros de controle da simulação;
-    \item \texttt{POSCAR}: Define a estrutura cristalina e as posições dos átomos;
-    \item \texttt{KPOINTS}: Especifica a malha de pontos; e
-    \item \texttt{POTCAR}: Contém os pseudopotenciais dos elementos presentes na simulação.
+    \item \texttt{INCAR}: contém os parâmetros de controle da simulação;
+    \item \texttt{POSCAR}: define a estrutura cristalina e as posições
+      dos átomos;
+    \item \texttt{KPOINTS}: especifica a malha de pontos; e
+    \item \texttt{POTCAR}: contém os pseudopotenciais dos elementos
+      presentes na simulação.
 \end{itemize}
 
 \subsubsection{Arquivo \texttt{INCAR}}
 O arquivo \texttt{INCAR} é um arquivo de \textit{input} central no VASP, que determina \emph{o que
 fazer e como fazer} durante a simulação. As \textit{tags} presentes no arquivo \texttt{INCAR} são o
 conjunto de parâmetros de controle que definem o tipo de cálculo a ser realizado e os algoritmos a
-serem utilizados pelo VASP. Por ser uma das principais causas de erros durante a execução do VASP, é
+serem utilizados pelo VASP\@. Por ser uma das principais causas de erros durante a execução do VASP, é
 importante compreender o significado de cada \textit{tag} e como elas afetam o comportamento do código.
 
 O formato de cada instrução consiste no nome de uma \textit{tag}, no sinal de igual (=) e nos valores
@@ -151,7 +153,7 @@ código abaixo:
   done
 \end{minted}
 
-Observa-se que o código acima utiliza um loop \texttt{while} para executar o VASP até que a condição
+Observa-se que o código acima utiliza um loop \texttt{`while`} para executar o VASP até que a condição
 de parada seja atendida. A cada iteração, o arquivo \texttt{CONTCAR} é copiado para o arquivo
 \texttt{POSCAR}, garantindo que a simulação continue a partir da última configuração obtida.
 
